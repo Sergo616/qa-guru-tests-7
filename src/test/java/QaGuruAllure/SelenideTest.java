@@ -20,7 +20,7 @@ public class SelenideTest {
                 //кликнуть на первый репозиторий из списка найденных
                 $$("[data-testid=results-list] div").first().$("a").click();
                 //проверка: заголовок selenide/selenide
-                $("#repository-container-header####################").shouldHave(text("selenide / selenide"));
+                $("#repository-container-header").shouldHave(text("selenide / selenide"));
                 sleep(2000);
     }
 }
