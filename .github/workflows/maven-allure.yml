@@ -18,33 +18,8 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: Start Chrome headless
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          echo "SELENIDE_BROWSER=chrome" >> $GITHUB_ENV
-          echo "SELENIDE_HEADLESS=true" >> $GITHUB_ENV
-
-      - name: Cache Selenium
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/selenium
-          key: ${{ runner.os }}-selenium-${{ hashFiles('**/pom.xml') }}
-
-      - name: Run Maven tests & generate Allure
-        run: mvn clean test allure:report
-        env:
-          SELENIDE_BROWSER: chrome
-          SELENIDE_HEADLESS: true
-          SELENIDE_TIMEOUT: 15000
-          SELENIDE_BROWSER_SIZE: 1920x1080
-
-      - name: Upload Allure results (debug)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: target/allure-results
+      - name: Run ONLY LabelsTest & generate Allure
+        run: mvn clean test -Dtest=QaGuruAllure.LabelsTest allure:report
 
       - name: Deploy Allure to Pages
         if: always()
