@@ -18,11 +18,10 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: Run ONLY LabelsTest & generate Allure
+      - name: Run LabelsTest ONLY & Allure
         run: mvn clean test -Dtest=QaGuruAllure.LabelsTest allure:report
 
-      - name: Deploy Allure to Pages
-        if: always()
+      - name: Deploy Allure Report
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
