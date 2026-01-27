@@ -1,0 +1,24 @@
+name: Maven Tests & Allure
+on: [push, pull_request]  # ← эта строка критична!
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        cache: 'maven'
+    
+    - name: Run Maven tests & generate Allure
+      run: mvn clean test allure:report
+    
+    - name: Deploy Allure to Pages
+      uses: peaceiris/actions-gh-pages@v4
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: target/site/allure-maven-plugin
