@@ -1,43 +1,46 @@
-name: Test
+name: Maven Tests & Allure
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   test:
-    # где запускаем
     runs-on: ubuntu-latest
-    # что делаем
     steps:
-      # выкачиваем репозиторий
-      - uses: actions/checkout@v3
-      # настраиваем java
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4  # обновил версии
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
-      - uses: Xotabu4/selenoid-gitnub-action@v2
-      # запускаем тесты
-      - run: ./gradlew clean test -Dselenide.remote=http://localhost:4444/wd/hub
-      # скачиваем историю тестов
-      - uses: actions/checkout@v2
+          cache: 'maven'  # кэш ускоряет
+
+      - name: Run Maven tests & generate Allure
+        run: mvn clean test allure:report  # твоя основная команда!
+
+      - name: Checkout gh-pages for history
         if: always()
+        uses: actions/checkout@v4
         continue-on-error: true
         with:
           ref: gh-pages
           path: gh-pages
-      # генерируем отчет
-      - uses: simple-elf/allure-report-action@master
+
+      - name: Generate Allure Report with history
         if: always()
+        uses: simple-elf/allure-report-action@master
+        id: allure-report
         with:
+          allure_results: target/allure-results  # Maven путь по умолчанию
           gh_pages: gh-pages
-          allure_results: build/allure-results
           allure_report: allure-report
           allure_history: allure-history
-      # публикуем отчет
-       - uses: peaceiris/actions-gh-pages@v2
-        if: always()
-      - evn:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
+          keep_reports: 20
 
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4  # обновил
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report  # или allure-history для истории
+          publish_branch: gh-pages
