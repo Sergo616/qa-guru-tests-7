@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Wed Jan 28 09:07:06 UTC 2026","Wed Jan 28 09:07:06 UTC 2026","19","","QaGuruAllure.LabelsTest","","QaGuruAllure.LabelsTest","testStaticLabels","Создание Issue для авторизованного пользователя",""
+"passed","Wed Jan 28 09:07:06 UTC 2026","Wed Jan 28 09:07:06 UTC 2026","2","","QaGuruAllure.LabelsTest","","QaGuruAllure.LabelsTest","testDynamicLabels","Создание Issue для авторизованного пользователя",""
