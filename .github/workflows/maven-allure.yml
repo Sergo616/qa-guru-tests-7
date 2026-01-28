@@ -2,6 +2,8 @@ name: Maven Tests & Allure
 
 permissions:
   contents: write
+  pages: write  # ← Для deploy-pages
+  id-token: write
 
 on: [push, pull_request]
 
@@ -18,13 +20,24 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: Run LabelsTest ONLY & Allure
+      - name: Run LabelsTest ONLY
         run: mvn clean test -Dtest=QaGuruAllure.LabelsTest allure:report
 
-      - name: Deploy Allure Report
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/site/allure-maven-plugin
-          publish_branch: gh-pages
-          force_orphan: true
+          path: target/site/allure-maven-plugin
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
