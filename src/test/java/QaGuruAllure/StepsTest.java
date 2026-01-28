@@ -23,7 +23,7 @@ public class StepsTest {
         });
         step("кликнуть на первый репозиторий из списка найденных", () -> {
             sleep(4000);
-            $$("[data-testid=results-list] div").first().$("a").click();
+            $$("[TESTdata-testid=results-list] div").first().$("a").click();
         });
         step("проверка: заголовок selenide/selenide", () -> {
             $("#repository-container-header").shouldHave(text("selenide / selenide"));

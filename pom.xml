@@ -70,16 +70,11 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- Аналог systemProperties(System.getProperties()) - прокидывает все системные свойства Maven в тесты -->
                     <systemProperties combine.self="override">
                         <!--suppress UnresolvedMavenProperty -->
                         <dir>${maven.build.directory}</dir>
                         <build>${project.build.directory}</build>
                     </systemProperties>
-                    <!-- Альтернатива (рекомендуемая, не deprecated): -->
-                    <!-- <systemPropertyVariables>
-                        <maven.build.directory>${project.build.directory}</maven.build.directory>
-                    </systemPropertyVariables> -->
                 </configuration>
             </plugin>
             <plugin>
