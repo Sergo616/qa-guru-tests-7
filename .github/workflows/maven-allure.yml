@@ -20,8 +20,8 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: Run LabelTest ONLY
-        run: mvn clean test -Dtest=QaGuruAllure.LabelTest allure:report
+      - name: Run LabelsTest ONLY
+        run: mvn clean test -Dtest=QaGuruAllure.LabelsTest allure:report
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
