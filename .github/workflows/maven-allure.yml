@@ -2,7 +2,7 @@ name: Maven Tests & Allure
 
 permissions:
   contents: write
-  pages: write  # ← Для deploy-pages
+  pages: write
   id-token: write
 
 on: [push, pull_request]
@@ -20,8 +20,8 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: Run LabelsTest ONLY
-        run: mvn clean test -Dtest=QaGuruAllure.LabelsTest allure:report
+      - name: Run ALL tests & generate Allure
+        run: mvn clean test allure:report
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
